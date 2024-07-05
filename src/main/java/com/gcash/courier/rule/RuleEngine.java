@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class RuleEngine {
         rules.sort(Comparator.comparingInt(Rule::getPriority));
     }
 
-    public Double applyRules(Parcel parcel) {
+    public BigDecimal applyRules(Parcel parcel) {
         for (Rule rule : rules) {
             if (rule.match(parcel)) {
                 return rule.calculateCost(parcel);

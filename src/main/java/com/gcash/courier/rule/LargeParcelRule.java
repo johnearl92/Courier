@@ -5,6 +5,8 @@ import com.gcash.courier.delivery.model.Parcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class LargeParcelRule implements Rule{
     private final CourierConfig config;
@@ -20,9 +22,9 @@ public class LargeParcelRule implements Rule{
     }
 
     @Override
-    public double calculateCost(Parcel parcel) {
+    public BigDecimal calculateCost(Parcel parcel) {
         double volume = parcel.height() * parcel.width() * parcel.length();
-        return config.getLargePrice() * volume;
+        return config.getLargePrice().multiply(BigDecimal.valueOf(volume));
     }
 
     @Override

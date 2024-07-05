@@ -4,6 +4,8 @@ import com.gcash.courier.delivery.model.Parcel;
 import com.gcash.courier.exception.ParcelException;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class RejectRule implements Rule{
     @Override
@@ -12,7 +14,7 @@ public class RejectRule implements Rule{
     }
 
     @Override
-    public double calculateCost(Parcel parcel) {
+    public BigDecimal calculateCost(Parcel parcel) {
         throw new ParcelException("Rejected: Weight exceeds 50kg");
     }
 
