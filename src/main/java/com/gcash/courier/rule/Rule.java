@@ -8,4 +8,10 @@ public interface Rule {
     boolean match(Parcel parcel);
     BigDecimal calculateCost(Parcel parcel);
     int getPriority();
+
+    default double getVolume(
+            Parcel parcel
+    ) {
+        return parcel.height() * parcel.width() * parcel.length();
+    }
 }

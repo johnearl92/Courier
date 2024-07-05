@@ -23,12 +23,11 @@ public class LargeParcelRule implements Rule{
 
     @Override
     public BigDecimal calculateCost(Parcel parcel) {
-        double volume = parcel.height() * parcel.width() * parcel.length();
-        return config.getLargePrice().multiply(BigDecimal.valueOf(volume));
+        return config.getLargePrice().multiply(BigDecimal.valueOf(getVolume(parcel)));
     }
 
     @Override
     public int getPriority() {
-        return 4;
+        return 5;
     }
 }

@@ -18,14 +18,12 @@ public class SmallParcelRule implements Rule{
 
     @Override
     public boolean match(Parcel parcel) {
-        double volume = parcel.height() * parcel.width() * parcel.length();
-        return volume < 1500;
+        return getVolume(parcel) < 1500;
     }
 
     @Override
     public BigDecimal calculateCost(Parcel parcel) {
-        double volume = parcel.height() * parcel.width() * parcel.length();
-        return config.getSmallPrice().multiply(BigDecimal.valueOf(volume));
+        return config.getSmallPrice().multiply(BigDecimal.valueOf(getVolume(parcel)));
     }
 
     @Override

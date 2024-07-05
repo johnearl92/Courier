@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @ConfigurationProperties(prefix = "com.gcash.courier")
 public class CourierConfig {
     private String voucherHost;
+    private String voucherApiKey;
     private BigDecimal largePrice;
     private BigDecimal mediumPrice;
     private BigDecimal smallPrice;

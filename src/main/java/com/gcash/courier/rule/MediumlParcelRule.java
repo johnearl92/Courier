@@ -18,14 +18,12 @@ public class MediumlParcelRule implements Rule{
 
     @Override
     public boolean match(Parcel parcel) {
-        double volume = parcel.height() * parcel.width() * parcel.length();
-        return volume < 2500;
+        return getVolume(parcel) < 2500;
     }
 
     @Override
     public BigDecimal calculateCost(Parcel parcel) {
-        double volume = parcel.height() * parcel.width() * parcel.length();
-        return config.getMediumPrice().multiply(BigDecimal.valueOf(volume));
+        return config.getMediumPrice().multiply(BigDecimal.valueOf(getVolume(parcel)));
     }
 
     @Override

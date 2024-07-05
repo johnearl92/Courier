@@ -2,6 +2,7 @@ package com.gcash.courier.delivery;
 
 import com.gcash.courier.TestcontainersConfiguration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.gcash.courier.delivery.model.DeliveryCost;
 import com.gcash.courier.delivery.model.Parcel;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,17 +24,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestcontainersConfiguration.class)
-public class DeliveryIntegrationTest {
+class DeliveryIntegrationTest {
     @Autowired
     WebTestClient webTestClient;
 
+    @BeforeEach
+    public void setUp() {
+        webTestClient = webTestClient.mutate()
+                .responseTimeout(Duration.ofMillis(30000))
+                .build();
+    }
+
+
     @Test
-    public void testDelivery() {
+    void testDelivery() {
         webTestClient
                 .post().uri("/api/v1/deliveries/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-api-key", UUID.randomUUID().toString())
-                .bodyValue(new Parcel(1.0, 1.0, 1.0, 1.0, "test"))
+                .bodyValue(new Parcel(1.0f, 1.0f, 1.0f, 1.0f, "test"))
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -41,25 +51,25 @@ public class DeliveryIntegrationTest {
     }
 
     @Test
-    public void testRejectDeliveryCost() {
+    void testRejectDeliveryCost() {
 
         webTestClient
                 .post().uri("/api/v1/deliveries/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-api-key", UUID.randomUUID().toString())
-                .bodyValue(new Parcel(51.0, 1.0, 1.0, 1.0, "test"))
+                .bodyValue(new Parcel(51.0f, 1.0f, 1.0f, 1.0f, "test"))
                 .exchange()
                 .expectStatus().is4xxClientError();
     }
 
     @Test
-    public void testHeavyDeliveryCost() {
+    void testHeavyDeliveryCost() {
 
         webTestClient
                 .post().uri("/api/v1/deliveries/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-api-key", UUID.randomUUID().toString())
-                .bodyValue(new Parcel(12.0, 1.0, 1.0, 1.0, "test"))
+                .bodyValue(new Parcel(12.0f, 1.0f, 1.0f, 1.0f, "test"))
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -69,13 +79,13 @@ public class DeliveryIntegrationTest {
     }
 
     @Test
-    public void testSmallDeliveryCost() {
+    void testSmallDeliveryCost() {
 
         webTestClient
                 .post().uri("/api/v1/deliveries/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-api-key", UUID.randomUUID().toString())
-                .bodyValue(new Parcel(1.0, 10.0, 10.0, 10.0, "test"))
+                .bodyValue(new Parcel(1.0f, 10.0f, 10.0f, 10.0f, "test"))
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -85,13 +95,13 @@ public class DeliveryIntegrationTest {
     }
 
     @Test
-    public void testMediumDeliveryCost() {
+    void testMediumDeliveryCost() {
 
         webTestClient
                 .post().uri("/api/v1/deliveries/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-api-key", UUID.randomUUID().toString())
-                .bodyValue(new Parcel(1.0, 20.0, 10.0, 10.0, "test"))
+                .bodyValue(new Parcel(1.0f, 20.0f, 10.0f, 10.0f, "test"))
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -101,13 +111,13 @@ public class DeliveryIntegrationTest {
     }
 
     @Test
-    public void testLargeDeliveryCost() {
+    void testLargeDeliveryCost() {
 
         webTestClient
                 .post().uri("/api/v1/deliveries/calculate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("X-api-key", UUID.randomUUID().toString())
-                .bodyValue(new Parcel(1.0, 30.0, 10.0, 10.0, "test"))
+                .bodyValue(new Parcel(1.0f, 30.0f, 10.0f, 10.0f, "test"))
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
