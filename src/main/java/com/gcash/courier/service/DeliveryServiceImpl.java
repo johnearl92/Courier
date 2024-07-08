@@ -31,15 +31,16 @@ public class DeliveryServiceImpl implements DeliveryService{
 
         return voucherService.discount(parcel.voucherCode()).map( discount -> {
             BigDecimal cost = ruleEngine.applyRules(parcel);
-            if ( discount > 0f ) {
-                return cost.subtract(
-                        cost.multiply(
-                                BigDecimal.valueOf(discount)
-                                        .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP)
-                        )
-                );
+            if ( discount == 0f ) {
+                return cost;
             }
-            return cost;
+
+            return cost.subtract(
+                    cost.multiply(
+                            BigDecimal.valueOf(discount)
+                                    .divide(BigDecimal.valueOf(100),2, RoundingMode.HALF_UP)
+                    )
+            );
 
         }).map(DeliveryCost::new);
 
