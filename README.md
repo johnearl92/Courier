@@ -18,7 +18,12 @@ This is an exercise for Gcash
 ./gradlew test
 ```
 
+or run the [TestCourierApplication.java](src%2Ftest%2Fjava%2Fcom%2Fgcash%2Fcourier%2FTestCourierApplication.java)
 
+
+## Config
+
+modify the prices and api for the voucher in application.properties
 
 
 
